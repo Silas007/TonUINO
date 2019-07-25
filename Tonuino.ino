@@ -171,6 +171,11 @@ MFRC522::StatusCode status;
 #define buttonDown A2
 #define busyPin 4
 
+//Volume ueber Poti
+#define volumePin A3
+const int minVol = 5;
+const int maxVol = 25;
+
 #define LONG_PRESS 1000
 
 Button pauseButton(buttonPause);
@@ -203,7 +208,7 @@ void setup() {
 
   // DFPlayer Mini initialisieren
   mp3.begin();
-  mp3.setVolume(15);
+  mp3.setVolume(map(analogRead(volumePin), 0, 1023, minVol, maxVol));
 
   // NFC Leser initialisieren
   SPI.begin();        // Init SPI bus
@@ -234,6 +239,9 @@ void loop() {
     pauseButton.read();
     upButton.read();
     downButton.read();
+
+    //Volume ueber Poti
+    mp3.setVolume(map(analogRead(volumePin), 0, 1023, minVol, maxVol));
 
     if (pauseButton.wasReleased()) {
       if (ignorePauseButton == false) {
