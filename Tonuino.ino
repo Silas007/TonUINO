@@ -311,12 +311,14 @@ void loop() {
         currentTrack = random(1, numTracksInFolder + 1);
         Serial.println(currentTrack);
         mp3.playFolderTrack(myCard.folder, currentTrack);
+        mp3.start();
       }
       // Album Modus: kompletten Ordner spielen
       if (myCard.mode == 2) {
         Serial.println(F("Album Modus -> kompletten Ordner wiedergeben"));
         currentTrack = 1;
         mp3.playFolderTrack(myCard.folder, currentTrack);
+        mp3.start();
       }
       // Party Modus: Ordner in zufälliger Reihenfolge
       if (myCard.mode == 3) {
@@ -324,6 +326,7 @@ void loop() {
             F("Party Modus -> Ordner in zufälliger Reihenfolge wiedergeben"));
         currentTrack = random(1, numTracksInFolder + 1);
         mp3.playFolderTrack(myCard.folder, currentTrack);
+        mp3.start();
       }
       // Einzel Modus: eine Datei aus dem Ordner abspielen
       if (myCard.mode == 4) {
@@ -331,6 +334,7 @@ void loop() {
             F("Einzel Modus -> eine Datei aus dem Odrdner abspielen"));
         currentTrack = myCard.special;
         mp3.playFolderTrack(myCard.folder, currentTrack);
+        mp3.start();
       }
       // Hörbuch Modus: kompletten Ordner spielen und Fortschritt merken
       if (myCard.mode == 5) {
@@ -338,6 +342,7 @@ void loop() {
                          "Fortschritt merken"));
         currentTrack = EEPROM.read(myCard.folder);
         mp3.playFolderTrack(myCard.folder, currentTrack);
+        mp3.start();
       }
     }
 
