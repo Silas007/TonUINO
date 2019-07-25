@@ -266,26 +266,12 @@ void loop() {
       ignorePauseButton = true;
     }
 
-    if (upButton.pressedFor(LONG_PRESS)) {
-      Serial.println(F("Volume Up"));
-      mp3.increaseVolume();
-      ignoreUpButton = true;
-    } else if (upButton.wasReleased()) {
-      if (!ignoreUpButton)
+    if (upButton.wasReleased()) {
         nextTrack(random(65536));
-      else
-        ignoreUpButton = false;
     }
 
-    if (downButton.pressedFor(LONG_PRESS)) {
-      Serial.println(F("Volume Down"));
-      mp3.decreaseVolume();
-      ignoreDownButton = true;
-    } else if (downButton.wasReleased()) {
-      if (!ignoreDownButton)
+    if (downButton.wasReleased()) {
         previousTrack();
-      else
-        ignoreDownButton = false;
     }
     // Ende der Buttons
   } while (!mfrc522.PICC_IsNewCardPresent());
@@ -311,14 +297,12 @@ void loop() {
         currentTrack = random(1, numTracksInFolder + 1);
         Serial.println(currentTrack);
         mp3.playFolderTrack(myCard.folder, currentTrack);
-        mp3.start();
       }
       // Album Modus: kompletten Ordner spielen
       if (myCard.mode == 2) {
         Serial.println(F("Album Modus -> kompletten Ordner wiedergeben"));
         currentTrack = 1;
         mp3.playFolderTrack(myCard.folder, currentTrack);
-        mp3.start();
       }
       // Party Modus: Ordner in zufälliger Reihenfolge
       if (myCard.mode == 3) {
@@ -326,7 +310,6 @@ void loop() {
             F("Party Modus -> Ordner in zufälliger Reihenfolge wiedergeben"));
         currentTrack = random(1, numTracksInFolder + 1);
         mp3.playFolderTrack(myCard.folder, currentTrack);
-        mp3.start();
       }
       // Einzel Modus: eine Datei aus dem Ordner abspielen
       if (myCard.mode == 4) {
@@ -334,7 +317,6 @@ void loop() {
             F("Einzel Modus -> eine Datei aus dem Odrdner abspielen"));
         currentTrack = myCard.special;
         mp3.playFolderTrack(myCard.folder, currentTrack);
-        mp3.start();
       }
       // Hörbuch Modus: kompletten Ordner spielen und Fortschritt merken
       if (myCard.mode == 5) {
@@ -342,8 +324,8 @@ void loop() {
                          "Fortschritt merken"));
         currentTrack = EEPROM.read(myCard.folder);
         mp3.playFolderTrack(myCard.folder, currentTrack);
-        mp3.start();
       }
+      mp3.start();
     }
 
     // Neue Karte konfigurieren
